@@ -33,14 +33,19 @@ namespace ShoppingList
             {
                 DisplayItemList(items);
                 choice = SelectItem(items);
-                Console.WriteLine(choice);
+                //Console.WriteLine(choice);
                 mycart = AddItemToCart(choice, mycart, GetPrice(choice, items));
-
+                myCartPrices.Insert(0, items[choice]);
+                for(int i =0; i< myCartPrices.Count; i++)
+                {
+                    Console.WriteLine(myCartPrices[i]);
+                }             
+                
                 do
                 {
                     Console.Write("Would you like to order anything else (y/n)");
                     input = Console.ReadLine();
-                    input.ToUpper();
+                    input = input.ToUpper();
                 } while (input != "Y" && input != "N");
                 if (input == "Y")
                 {
@@ -135,11 +140,17 @@ namespace ShoppingList
         static void CartMath(ArrayList list)
         {
             double total = 0;
+            int count = 0;
             for (int i = 1; i < list.Count; i = i + 3)
             {
+                int qty = (int)list[i];
+                double price = (double)list[i+1];
                 total = total + ((int)list[i] * (double)list[i + 1]);
+                count = count + qty;
             }
+            
             Console.WriteLine($"The Total of everything in your cart is: {total}");
+            Console.WriteLine($"The Average price of an item in your cart is {total/count}");
         }
 
     }
