@@ -83,7 +83,7 @@ namespace ShoppingList
             {
                 Console.Write("What item would you like to add to your cart?: ");
                 choice = Console.ReadLine();
-                choice = ConvertChoice(choice);
+                choice = ConvertChoice(choice); // Convert Choice adds "s" to the end if missing; and capitizes the first letters of words
                 if (list.ContainsKey(choice))
                 {
                     double price = list[choice];
@@ -116,9 +116,6 @@ namespace ShoppingList
             {
                 mycart[prelimindex + 1] = (int)mycart[prelimindex + 1] + 1;
             }
-                        
-            
-
             return mycart;
         } 
 
@@ -156,37 +153,43 @@ namespace ShoppingList
 
         static string ConvertChoice(string choice)
         {
-            //Console.WriteLine(choice);
+            //Console.WriteLine(choice); // Debugging Code
             int length = choice.Length;
             string lastletter = choice.Substring(length - 1, 1);
-            //Console.WriteLine(lastletter);
-            if (!(lastletter == "s" || lastletter == "S"))
+            //Console.WriteLine(lastletter);  // Debugging Code
+            if (!(lastletter == "s" || lastletter == "S"))  // if last letter is not an s add an s to the end
             {
                 choice = choice + "s";
             }
-            //Console.WriteLine(choice);
+            //Console.WriteLine(choice);   // Debugging Code
+            
+            // ~~~~~~  Breaking the String Apart ~~~~~~
+
             int space = choice.IndexOf(" ");
             string secondfirstletter = null;
             string secondrest = null;
-            if (space == -1)
+            if (space == -1)  // if only one word
             {
                 space = choice.Length;
             }
-            else
+            else // else 2 words
             {
                 secondfirstletter = choice.Substring(space + 1, 1);
                 secondrest = choice.Substring(space + 2, choice.Length - (space + 2));
             }
-            //Console.WriteLine(space);
+            //Console.WriteLine(space);  // Debugging Code
             string firstletter = choice.Substring(0, 1);
             string firstrest = choice.Substring(1, space - 1);
+
+            //Console.WriteLine(firstletter);  // Debugging Code
+            //Console.WriteLine(firstrest);  // Debugging Code
+            //Console.WriteLine(secondfirstletter);  // Debugging Code
+            //Console.WriteLine(secondrest);  // Debugging Code
+            //Console.WriteLine($"Space = {space}");  // Debugging Code
             
-            //Console.WriteLine(firstletter);
-            //Console.WriteLine(firstrest);
-            //Console.WriteLine(secondfirstletter);
-            //Console.WriteLine(secondrest);
-            //Console.WriteLine($"Space = {space}");
-            if (space == choice.Length)
+            //  ~~~~~~~~ Putting the String back together all perfect ~~~~~~~~~~
+            
+            if (space == choice.Length)  
             {
                 choice = $"{firstletter.ToUpper()}{firstrest}";
             }
@@ -194,7 +197,7 @@ namespace ShoppingList
             {
                 choice = $"{firstletter.ToUpper()}{firstrest} {secondfirstletter.ToUpper()}{secondrest}";
             }
-            //Console.WriteLine(choice);
+            //Console.WriteLine(choice);  // Debugging Code
             return choice;
         }
     }
