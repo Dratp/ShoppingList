@@ -133,7 +133,7 @@ namespace ShoppingList
             Console.Clear();
             for (int i = 0; i < list.Count; i = i+3)
             {
-                Console.WriteLine($"{list[i+1]} x {list[i]} at the cost of ${list[i+2]}.");
+                Console.WriteLine($"{list[i+1]} x {list[i]} at the cost of {list[i+2]:C2}.");
             }
             Console.WriteLine();
         }
