@@ -33,7 +33,7 @@ namespace ShoppingList
             {
                 DisplayItemList(items);
                 choice = SelectItem(items);
-                //Console.WriteLine(choice);
+                //Console.WriteLine(choice);  // Debugging Code
                 mycart = AddItemToCart(choice, mycart, GetPrice(choice, items));
                 myCartPrices.Insert(0, items[choice]);
                 Console.WriteLine();
@@ -191,11 +191,11 @@ namespace ShoppingList
             
             if (space == choice.Length)  
             {
-                choice = $"{firstletter.ToUpper()}{firstrest}";
+                choice = $"{firstletter.ToUpper()}{firstrest.ToLower()}";
             }
             else
             {
-                choice = $"{firstletter.ToUpper()}{firstrest} {secondfirstletter.ToUpper()}{secondrest}";
+                choice = $"{firstletter.ToUpper()}{firstrest.ToLower()} {secondfirstletter.ToUpper()}{secondrest.ToLower()}";
             }
             //Console.WriteLine(choice);  // Debugging Code
             return choice;
