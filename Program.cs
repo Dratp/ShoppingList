@@ -36,11 +36,7 @@ namespace ShoppingList
                 //Console.WriteLine(choice);
                 mycart = AddItemToCart(choice, mycart, GetPrice(choice, items));
                 myCartPrices.Insert(0, items[choice]);
-                for(int i =0; i< myCartPrices.Count; i++)
-                {
-                    Console.WriteLine(myCartPrices[i]);
-                }             
-                
+                Console.WriteLine();
                 do
                 {
                     Console.Write("Would you like to order anything else (y/n)");
@@ -72,7 +68,9 @@ namespace ShoppingList
             foreach (KeyValuePair<string, double> item in items)
             {
                 double price = (double)item.Value;
-                Console.WriteLine("{0,-20}${1,-7}",item.Key, price);
+                string food = item.Key;
+//                Console.WriteLine("{0,-20}${1,-7}",item.Key, price);
+                Console.WriteLine($"{food,-20}${price,-7:N2}");
             }
         }
 
@@ -83,17 +81,20 @@ namespace ShoppingList
             Console.WriteLine();
             do
             {
-                Console.Write("What item would you like to add to your cart?:");
+                Console.Write("What item would you like to add to your cart?: ");
                 choice = Console.ReadLine();
+                choice = ConvertChoice(choice);
                 if (list.ContainsKey(choice))
                 {
-                    Console.WriteLine($"Adding {choice} to your cart at {list[choice]}");
+                    double price = list[choice];
+                    Console.WriteLine($"Adding {choice} to your cart at ${price:N2}");
                     isValid = true;
                 }
                 else
                 {
-                    Console.WriteLine("Sorry, we don't have those.  Please try again.");
                     DisplayItemList(list);
+                    Console.WriteLine();
+                    Console.WriteLine("Sorry, we don't have those.  Please try again.");
                     isValid = false;
                 }
             } while (!isValid);
@@ -110,7 +111,6 @@ namespace ShoppingList
                 mycart.Add(choice);
                 mycart.Add(1);
                 mycart.Add(price);
-                
             }
             else
             {
@@ -130,6 +130,7 @@ namespace ShoppingList
 
         static void DisplayCart(ArrayList list)
         {
+            Console.Clear();
             for (int i = 0; i < list.Count; i = i+3)
             {
                 Console.WriteLine($"{list[i+1]} x {list[i]} at the cost of ${list[i+2]}.");
@@ -141,17 +142,60 @@ namespace ShoppingList
         {
             double total = 0;
             int count = 0;
-            for (int i = 1; i < list.Count; i = i + 3)
+            for (int i = 0; i < list.Count; i = i + 3)
             {
-                int qty = (int)list[i];
-                double price = (double)list[i+1];
-                total = total + ((int)list[i] * (double)list[i + 1]);
+                int qty = (int)list[i+1];
+                double price = (double)list[i+2];
+                total = total + (qty * price);
                 count = count + qty;
             }
             
-            Console.WriteLine($"The Total of everything in your cart is: {total}");
-            Console.WriteLine($"The Average price of an item in your cart is {total/count}");
+            Console.WriteLine($"The Total of everything in your cart is: ${total:N2}");
+            Console.WriteLine($"The Average price of an item in your cart is ${total/count:N2}");
         }
 
+        static string ConvertChoice(string choice)
+        {
+            //Console.WriteLine(choice);
+            int length = choice.Length;
+            string lastletter = choice.Substring(length - 1, 1);
+            //Console.WriteLine(lastletter);
+            if (!(lastletter == "s" || lastletter == "S"))
+            {
+                choice = choice + "s";
+            }
+            //Console.WriteLine(choice);
+            int space = choice.IndexOf(" ");
+            string secondfirstletter = null;
+            string secondrest = null;
+            if (space == -1)
+            {
+                space = choice.Length;
+            }
+            else
+            {
+                secondfirstletter = choice.Substring(space + 1, 1);
+                secondrest = choice.Substring(space + 2, choice.Length - (space + 2));
+            }
+            //Console.WriteLine(space);
+            string firstletter = choice.Substring(0, 1);
+            string firstrest = choice.Substring(1, space - 1);
+            
+            //Console.WriteLine(firstletter);
+            //Console.WriteLine(firstrest);
+            //Console.WriteLine(secondfirstletter);
+            //Console.WriteLine(secondrest);
+            //Console.WriteLine($"Space = {space}");
+            if (space == choice.Length)
+            {
+                choice = $"{firstletter.ToUpper()}{firstrest}";
+            }
+            else
+            {
+                choice = $"{firstletter.ToUpper()}{firstrest} {secondfirstletter.ToUpper()}{secondrest}";
+            }
+            //Console.WriteLine(choice);
+            return choice;
+        }
     }
 }
